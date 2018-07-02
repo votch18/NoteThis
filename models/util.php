@@ -1,121 +1,106 @@
 <?php
 
-class Util extends Model {
+class Util extends Model
+{
 
-    public static function generateRandomCode($length = 50) {
+    public static function generateRandomCode($length = 50)
+    {
         return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
-    public static function generateRandomCode2($length = 4) {
+    public static function generateRandomCode2($length = 4)
+    {
         return substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
-    public static function n_format($value){
+    public static function n_format($value)
+    {
 
         return number_format((float)$value, 2, '.', ',');
     }
 
-    public static function d_format($value){
+    public static function d_format($value)
+    {
 
         return date_format(new DateTime($value), 'Y/m/d');
     }
 
-    public static function d_format2($value){
+    public static function d_format2($value)
+    {
 
         return date_format(new DateTime($value), 'Y/m/d h:m A');
     }
 
-    
-    public static function date_format($value){
+
+    public static function date_format($value)
+    {
 
         return date_format(new DateTime($value), 'Y-m-d');
     }
 
 
-    public static function draw_calendar($month,$year, $check_in, $check_out){
+    public static function encrypt_decrypt($action, $string)
+    {
+        $output = false;
 
-        $day_from = $check_in->format('d');
+        $encrypt_method = "AES-256-CBC";
+        $secret_key = 'This is my secret key';
+        $secret_iv = 'This is my secret iv';
 
-        $num_of_days = date_diff($check_in, $check_out);
-        $num_of_days = $num_of_days->d;
-        $to = $day_from + $num_of_days;
+        // hash
+        $key = hash('sha256', $secret_key);
 
-        $style = "";
-        $days = array();
-        for ($x = $day_from; $x <= $to; $x++){
-            array_push($days, $x);
+        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+        if ($action == 'encrypt') {
+            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+            $output = base64_encode($output);
+        } else if ($action == 'decrypt') {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         }
 
+        return $output;
+    }
 
-        /* draw table */
-        $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'Nomvember', 'December');
-        $calendar = '<table cellpadding="0" cellspacing="0" class="calendar" style="width: 100%;">
-        <tr>
-            <td colspan="7"><div class="btn btn-primary" style="width: 100%; font-weight: bold; font-size: 18px; padding: 20px; text-align: center;">'.$months[$month-1].' '.$year.'</div></td>
-        </tr>
-        ';
+    public static function filter_content($url)
+    {
+        // FIND ALL OF THE DESIRED DIV
+        $htm = $url;
+        $str = '<div>';
+        $arr = explode($str, $htm);
+        $new = $arr[0];
+        $len = strlen($new);
 
-        /* table headings */
-        $headings = array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
-        $calendar.= '<tr class="calendar-row"><td class="calendar-day-head">'.implode('</td><td class="calendar-day-head">',$headings).'</td></tr>';
+        // ACCUMULATE THE OUTPUT STRING HERE
+        $out = NULL;
 
-        /* days and weeks vars now ... */
-        $running_day = date('w',mktime(0,0,0,$month,1,$year));
-        $days_in_month = date('t',mktime(0,0,0,$month,1,$year));
-        $days_in_this_week = 1;
-        $day_counter = 0;
-        $dates_array = array();
+        // WE ARE INSIDE ONE DIV TAG
+        $cnt = 1;
 
-        /* row for week one */
-        $calendar.= '<tr class="calendar-row">';
+        // UNTIL THE END OF STRING OR UNTIL WE ARE OUT OF ALL DIV TAGS
+        while ($len) {
+            // COPY A CHARACTER
+            $chr = substr($new, 0, 1);
 
-        /* print "blank" days until the first of the current week */
-        for($x = 0; $x < $running_day; $x++):
-            $calendar.= '<td class="calendar-day-np"> </td>';
-            $days_in_this_week++;
-        endfor;
+            // IF THE DIV NESTING LEVEL INCREASES OR DECREASES
+            if (substr($new, 0, 4) == '<div') $cnt++;
+            if (substr($new, 0, 5) == '</div') $cnt--;
 
-        /* keep going with days.... */
-        for($list_day = 1; $list_day <= $days_in_month; $list_day++):
-            $calendar.= '<td class="calendar-day">';
-            /* add in the day number */
-            if (in_array($list_day, $days)) {
-                $style = " style='background: #faaf40;'";
-            }else {
-                $style = "";
-            }
-            $calendar.= '<div class="day-number" '.$style.'>'.$list_day.'</div>';
+            // ACTIVATE THIS TO FOLLOW THE COUNT OF NESTING LEVELS
+            // echo " $cnt";
 
-            /** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
-            $calendar.= str_repeat('<p> </p>',2);
+            // WHEN THE NESTING LEVEL GOES BACK TO ZERO
+            if (!$cnt) break;
 
-            $calendar.= '</td>';
-            if($running_day == 6):
-                $calendar.= '</tr>';
-                if(($day_counter+1) != $days_in_month):
-                    $calendar.= '<tr class="calendar-row">';
-                endif;
-                $running_day = -1;
-                $days_in_this_week = 0;
-            endif;
-            $days_in_this_week++; $running_day++; $day_counter++;
-        endfor;
+            // WHEN THE NESTING LEVEL IS STILL POSITIVE
+            $len--;
+            $out .= $chr;
+            $new = substr($new, 1);
+        }
 
-        /* finish the rest of the days in the week */
-        if($days_in_this_week < 8):
-            for($x = 1; $x <= (8 - $days_in_this_week); $x++):
-                $calendar.= '<td class="calendar-day-np"> </td>';
-            endfor;
-        endif;
-
-        /* final row */
-        $calendar.= '</tr>';
-
-        /* end the table */
-        $calendar.= '</table>';
-
-        /* all done, return result */
-        return $calendar;
+        // RETURN THE WORK PRODUCT
+        return $str . $out . '</div>';
     }
 
 

@@ -3,15 +3,16 @@
 class Log extends Model
 {
 
-    public function getLogs(){
+    public function getLogs()
+    {
         $sql = "select * from t_logs";
 
         return $this->db->query($sql);
     }
 
 
-
-    public function save($action){
+    public function save($action)
+    {
 
         $action = $this->db->escape($action);
         $userid = Session::get('userid');

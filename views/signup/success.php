@@ -1,12 +1,18 @@
-<div class="container">
+<div class="container mt-5">
     <div class="wd-500">
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">Success!</h4>
 
-            <p>You have successfully sign-up with <?=Config::get("site_name")?> </p>
+            <p>Your account has been created, we are taking you to your notes... </p>
             <hr>
-            <p class="mb-0">Please <a href="/">sign-in</a>.</p>
         </div>
 
     </div>
 </div>
+<script>
+
+    setTimeout(function () {
+        window.location = "/notes/";
+    }, 5000);
+
+</script>

@@ -1,39 +1,64 @@
 <?php
-    if(Session::hasFlash()) {
-        ?>
-        <div class="container">
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Oh Snap!</h4>
+if (Session::hasFlash()) {
+    ?>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Oh Snap!</h4>
 
-                <p>You don't have permission to view this note.</p>
-                <hr>
-                <p class="mb-0">Please contact the owner.</p>
-            </div>
+            <p>You don't have permission to view this note.</p>
+            <hr>
+            <p class="mb-0">Please contact the owner.</p>
         </div>
-    <?php
-    }else {
-        ?>
-    <div class="container">
-        <div class="card bordered" style="max-width: 350px; margin: 100px auto;">
-            <div class="card-header">
-                Password Protected!
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Enter Password</label>
-                        <input type="password" name="password" class="form-control" id="exampleInputPassword1"
-                               placeholder="Password">
+    </div>
+<?php
+} else {
+    ?>
+    <!-- Option Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="unlock" action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Password Protected</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <hr/>
-                    <button type="submit" class="btn btn-success "><i class="fas fa-unlock-alt"></i> Unlock</button>
-                </form>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="<?= $this->data['id'] ?>"/>
 
-            </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Enter Password</label>
+                            <input type="password" class="form-control" name="password" id="pass"
+                                   placeholder="Password">
+                            <br/>
+                            <button type="button" class="btn btn-primary" id="unlockNotes"><i class="fa fa-unlock"></i>
+                                Unlock
+                            </button>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
 
-    <?php
-    }
+    <script>
+        $(document).ready(function () {
+            $("#passwordModal").modal("toggle");
+
+            $("#unlockNotes").on('click', function (e) {
+                $("#unlock").submit();
+            });
+
+        });
+    </script>
+
+
+<?php
+}
 ?>

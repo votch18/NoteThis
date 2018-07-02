@@ -1,62 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?=Config::get("site_name")?></title>
+    <?php
+
+    ?>
+    <title><?= Config::get("site_name") ?></title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="">
+    <link rel=icon href="/assets/img/favicon.png">
 
 
-	<!-- CSS Dependencies 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-	
-	<script src="/assets/ckeditor/ckeditor.js"></script>
-	<script src="/assets/ckeditor/samples/js/sample.js"></script>
-	<link rel="stylesheet" href="/assets/ckeditor/samples/css/samples.css">
-	<link rel="stylesheet" href="/assets/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
-	-->
-	
-	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
-	
-	<!--<link rel="stylesheet" href="/assets/css/shards.min.css?version=2.0.1">
-	<link rel="stylesheet" href="/assets/css/shards-extras.min.css?version=2.0.1">-->
-	<link rel="stylesheet" href="/assets/css/style.css">
-	
+    <!--CSS-->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!--Javascript-->
+    <script src="/assets/js/jquery-slim.min.js"></script>
+    <!--
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/tinymce/tinymce.min.js"></script>
 
 </head>
-<body class="shards-landing-page--1">
+<body>
+<div class="loader_con">
+	<div class="loader" style="display: block;"></div>
+</div>
+<div id="fb-root"></div>
 
-    <?php
-       
-        if (Session::get("id") == null) {
-            include "_template/nav.php";
+<script>
+    /**Initialize facebook sdk */
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '576074405774349',
+            status: true,
+            cookie: true,
+            xfbml: true,
+            version: 'v3.0'
+        });
+    };
+
+    /**Load the SDK asynchronously */
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
         }
-    ?>
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
-     <?php echo $content['content_html']; ?>
+    /**Login using facebook account */
+    function login() {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                var access_token = FB.getAuthResponse()['accessToken'];
+                console.log('Access Token = ' + access_token);
+                FB.api('/me?fields=name,link,id,email', function (response) {
+                    console.log('Good to see you, ' + response.name + '.');
+
+                    /**Add welcome message */
+                    document.getElementById('status').innerHTML = '<div class="alert alert-success">Welcome ' + response.email + '! <br/>We are now taking you to your notes...</div>';
+
+                    var im = response.email;
+                    var id = response.id;
+                    $.ajax({
+                        type: 'GET',
+                        url: "/ajax/",
+                        data: {
+                            email: im,
+                            password: "",
+                            action: "login"
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res) {
+                                console.log("Successfully log-in using Facebook account.");
+                            } else {
+                                console.log("Error logging-in using Facebook account!");
+                            }
 
 
-	  <!-- JavaScript Dependencies 
-      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	 -->
-	 
-	  <script src="/assets/js/jquery.min.js"></script>
-	  <script src="/assets/js/bootstrap.bundle.min.js"></script>
-	  
-	  
-	  <script src="/assets/js/ajax.js"></script>
-	  <script src="/assets/js/input.js"></script>
-    <script src="/assets/js/options.js"></script>
-	   
-	  
-	<script>
-		initSample();
-	</script>
+                        }
+                    });
 
+                    /**Redirect to notes page after few seconds to see the message */
+                    setTimeout(function () {
+                        window.location = "/notes/";
+                    }, 1500);
+                });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+            var status = FB.getLoginStatus();
+            console.log(status);
+        }, {scope: ''});
+    }
+
+    /**Facebook Log-out function */
+    function logout() {
+		window.location = "/accounts/logout/";
+		
+        FB.logout(function (response) {
+            // user is now logged out
+        });
+    }
+</script>
+
+<div id="content" style="display: none">
+<?php
+if (Session::get("email") == null) {
+    include "_template/nav.php";
+} else {
+    if ((strtolower(App::getRouter()->getController()) == 'notes') && (strtolower(App::getRouter()->getAction()) == 'view')) {
+        include "_template/nav.php";
+    }
+}
+?>
+
+<?php echo $content['content_html']; ?>
+
+</div>
+
+<!--Javascript-->
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/initTinyMCE.js"></script>
+<script src="/assets/js/setup.js"></script>
+<script src="/assets/js/options.js"></script>
+<script>
+
+    /**Initialize drag and drop functions for tab */
+    $(document).ready(function () {
+        var $tabs = $("ul.nav-tabs").tabs();
+        $(".nav-tabs").sortable({
+            axis: "x",
+            cancel: '.new, .overflow',
+            stop: function () {
+                $tabs.tabs("refresh");
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

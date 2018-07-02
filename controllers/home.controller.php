@@ -1,63 +1,68 @@
 <?php
 
-class HomeController extends Controller{
+class HomeController extends Controller
+{
 
-    public function __construct($data = array()){
+    public function __construct($data = array())
+    {
         parent::__construct($data);
         $this->model = new Account();
     }
-    public function index(){
-        if ($_POST && isset ( $_POST['email']) && isset ($_POST['password'])){
-            $user = $this->model->getByEmail($_POST['email']);
-            $hash = md5($user['salt'].$_POST['password']);
 
-            if ($user && $hash == $user['password']){
-                Session::set('id', $user['id']);
+    public function index()
+    {
+        if ($_POST && isset ($_POST['email']) && isset ($_POST['password'])) {
+            $user = $this->model->getByEmail($_POST['email']);
+            $hash = md5($user['salt'] . $_POST['password']);
+
+            if ($user && $hash == $user['password']) {
                 Session::set('email', $user['email']);
                 Session::set('access', "1");
+                Session::set('login', "app");
 
-				$note = new Note();
-				$note->createNote();
+				setcookie('email', $user['email'], time() + (31556926), "/");
 				
-				
-                Router::redirect('/');
-            }else {
+                $note = new Note();
+                $notes = $note->getOpenNotes();
+                if (count($notes) < 1) {
+                    $note->createNote();
+                }
+
+
+                Router::redirect('/notes/');
+            } else {
                 Session::setFlash("Invalid username or password!");
             }
         }
     }
 
-    public function dashboard(){
+    public function ajax_index()
+    {
+        if ($_GET) {
 
-    }
+            //check if email already exist if not login account
+            Session::set('email', $_GET['email']);
+            Session::set('access', "1");
+            Session::set('login', "fb");
 
-    public function signup(){
-        
-        if ( $_POST ){
-            if($this->model->signup($_POST)){
-                Router::redirect('/home/success/');
-            } else {
-                Session::setFlash("<strong>Oh Snap!</strong> There was an error saving this record!");
+			setcookie('email', $_GET['email'], time() + (31556926), "/");
+			
+            $note = new Note();
+            $notes = $note->getOpenNotes();
+            if (count($notes) < 1) {
+                $note->createNote();
             }
+
+
+            $this->data = $this->data = $this->model->signup($_GET);
+
+
         }
     }
 
-    public function new_note(){
+    public function page_not_found()
+    {
         $this->data = null;
     }
-	
-	
-	public function ajax_index(){
-		if ( $_GET ) {
-			
-			//check if email already exist if not login account
-			Session::set('email', $_GET['email']);
-			Session::set('access', "1");
-					
-			$this->data	= $this->data = $this->model->signup($_GET);
-			
-			
-		}
-    }
-	
+
 }

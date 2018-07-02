@@ -1,0 +1,14 @@
+Hello Sir Arron,
+
+I would like to report to you the status of my task.
+
+1. Fullscreen for notes - done.
+2. View title for notes - done. (<title>Note title here | NoteThis</title>)
+3. Archive notes - added (empty notes automatically deleted not empty goes to the notes manager -> archive notes goes to archive manager)
+4. Log-out button at the right bottom - done.
+5. Image alignment - done.
+6. Tab appearance - done (restored to previous appearance).
+7. Overflow for tabs added. (Overflow icon at the top right).
+8. New button at the right side of tab - done.
+
+Proper testing is not yet done (I will do it tomorrow). Please review my work and leave feedback. Thanks!

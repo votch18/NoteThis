@@ -1,6 +1,7 @@
 <?php
 
-class Router {
+class Router
+{
 
     protected $uri;
     protected $controller;
@@ -73,7 +74,8 @@ class Router {
         return $this->query;
     }
 
-    public  function __construct($uri){
+    public function __construct($uri)
+    {
         $this->uri = urldecode(trim($uri, '/'));
 
         //get defaults
@@ -92,31 +94,31 @@ class Router {
 
         //get query
         //if there is single qoute, remove it to avoid sql injection
-        if (isset($uri_parts[1])){
-            $uri_title = explode('=',$uri_parts[1]);
+        if (isset($uri_parts[1])) {
+            $uri_title = explode('=', $uri_parts[1]);
             $this->query = str_replace("'", "", $uri_title[1]);
         }
 
 
         //get routes & language if any
-        if (count($path_parts)){
-            if (in_array(strtolower(current($path_parts)), array_keys($routes))){
+        if (count($path_parts)) {
+            if (in_array(strtolower(current($path_parts)), array_keys($routes))) {
                 $this->route = strtolower(current($path_parts));
                 $this->method_prefix = isset($routes[$this->route]) ? $routes[$this->route] : '';
                 array_shift($path_parts);
-            } else if (in_array(strtolower(current($path_parts)), Config::get('languages'))){
+            } else if (in_array(strtolower(current($path_parts)), Config::get('languages'))) {
                 $this->language = strtolower(current($path_parts));
                 array_shift($path_parts);
             }
 
             //get controller
-            if (current($path_parts)){
+            if (current($path_parts)) {
                 $this->controller = strtolower(current($path_parts));
                 array_shift($path_parts);
             }
 
             //get action
-            if (current($path_parts)){
+            if (current($path_parts)) {
                 $this->action = strtolower(current($path_parts));
                 array_shift($path_parts);
             }
@@ -129,7 +131,8 @@ class Router {
 
     }
 
-    public static function redirect($location){
+    public static function redirect($location)
+    {
         header("location: $location");
     }
 }
