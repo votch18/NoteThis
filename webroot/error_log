@@ -484,6 +484,7 @@ Stack trace:
 [19-May-2018 11:44:28 UTC] PHP Fatal error:  Class 'Favicon.icoController' not found in /home/notethis/public_html/libs/app.class.php on line 55
 [19-May-2018 11:44:29 UTC] PHP Fatal error:  Class 'Favicon.icoController' not found in /home/notethis/public_html/libs/app.class.php on line 55
 [19-May-2018 11:44:30 UTC] PHP Fatal error:  Class 'Favicon.icoController' not found in /home/notethis/public_html/libs/app.class.php on line 55
+<<<<<<< HEAD
 [14-Jun-2018 11:33:33 UTC] PHP Notice:  Undefined index: id in /home/notethis/public_html/controllers/notes.controller.php on line 94
 [14-Jun-2018 11:38:53 UTC] PHP Notice:  Undefined index: id in /home/notethis/public_html/controllers/notes.controller.php on line 94
 [14-Jun-2018 11:39:00 UTC] PHP Notice:  Undefined index: id in /home/notethis/public_html/controllers/notes.controller.php on line 94
@@ -2493,3 +2494,5 @@ Stack trace:
 [20-Nov-2018 00:55:04 UTC] PHP Fatal error:  Class 'Ads.txtController' not found in /home/notethis/public_html/libs/app.class.php on line 59
 [20-Nov-2018 01:24:04 UTC] PHP Fatal error:  Class 'Index.phpController' not found in /home/notethis/public_html/libs/app.class.php on line 59
 [20-Nov-2018 13:48:43 UTC] PHP Fatal error:  Class 'Ads.txtController' not found in /home/notethis/public_html/libs/app.class.php on line 59
+=======
+>>>>>>> 4f74314149a233f04baf993f8456f72ae35eefce
