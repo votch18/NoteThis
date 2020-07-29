@@ -1,0 +1,21 @@
+html, body {
+	min-height: 100%;
+	background: #fff;
+	margin: 0!important; /*remove skeleton.css margin*/
+	font-size: 14px!important;
+}
+
+body {
+	caret-color: #fcbb01!important;
+}
+/*tiny MCE*/
+body#tinymce { background: #fff!important; caret-color: #fcbb01!important; border: 0; margin: 5px; }
+.my_class { background: #fff!important; min-height: 100%; }
+.mce-container-body, .mce-stack-layout { background: #fff!important;   caret-color: #fcbb01!important; min-height: 100%;}
+#mceu_0 { box-shadow: none; background: #fff!important;  caret-color: #fcbb01!important; min-height: 100%; padding: 10px;  }
+#mceu_0:focus {background: #fff!important;  caret-color: #fcbb01!important; }
+#editor_ifr { background: #fff!important; caret-color: #fcbb01; min-height: 100%; }
+#tinymce {caret-color: #fcbb01!important;  border: 0; min-height: 100%; }
+#mceu_0-body {  caret-color: #fcbb01!important;  }
+#mceu_2 {  caret-color: #fcbb01!important; min-height: 100%; border: none; }
+div.mce-edit-area { background: #fff!important; }

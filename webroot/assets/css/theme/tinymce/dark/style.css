@@ -1,0 +1,23 @@
+html, body {
+	 min-height: 100%;
+	background: #000;
+	color: #AAAAAA!important;
+	margin: 0!important; /*remove skeleton.css margin*/
+	font-size: 14px!important;
+}
+
+body {
+	 caret-color: #fcbb01!important;
+}
+
+/*tiny MCE*/
+body#tinymce { background: #000!important; caret-color: #fcbb01!important; border: 0; margin: 5px; color: #AAAAAA!important;}
+.my_class { background: #000!important; min-height: 100%; color: #AAAAAA!important;}
+.mce-container-body, .mce-stack-layout { background: #000!important;   caret-color: #fcbb01!important; min-height: 100%; color: #AAAAAA!important;}
+#mceu_0 { box-shadow: none; background: #000!important;  caret-color: #fcbb01!important; min-height: 100%; padding: 10px;  color: #AAAAAA!important;}
+#mceu_0:focus {background: #000!important;  caret-color: #fcbb01!important; color: #AAAAAA!important;}
+#editor_ifr { background: #000!important; caret-color: #fcbb01; min-height: 100%; color: #AAAAAA!important; }
+#tinymce {caret-color: #fcbb01!important;  border: 0; min-height: 100%; color: #AAAAAA!important;}
+#mceu_0-body {  caret-color: #fcbb01!important; color: #AAAAAA!important; }
+#mceu_2 {  caret-color: #fcbb01!important; min-height: 100%; border: none; color: #AAAAAA!important;}
+div.mce-edit-area { background: #000!important; color: #AAAAAA!important;}
