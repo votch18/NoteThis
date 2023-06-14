@@ -9,11 +9,6 @@ class AccountsController extends Controller
         $this->model = new Account();
     }
 
-    public function index()
-    {
-
-    }
-
     public function logout()
     {
 

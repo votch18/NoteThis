@@ -259,5 +259,4 @@ class Note extends Model
 
         //return (array('location' => $location.$name));
     }
-
 }

@@ -39,7 +39,6 @@
     <!--CSS-->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/font-awesome.css">
-    <!--<link rel="stylesheet" href="/assets/css/style.css">-->
     <?php
     if ($theme == 0){
         ?>

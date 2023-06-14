@@ -158,6 +158,4 @@ class NotesController extends Controller
             $this->data = $this->model->uploadImageTinyMCE($_POST);
         }
     }
-
-
 }

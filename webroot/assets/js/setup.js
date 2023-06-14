@@ -20,7 +20,8 @@ $(document).ready(function(){
 		
 		fixed_toolbar_container: '#mytoolbar',
 
-		content_css : theme + new Date().getTime(),
+        content_css : theme + new Date().getTime(),
+		//content_css : 'https://notethis.org/webroot/assets/style.css',
 
 		force_br_newlines : true,
 		
@@ -498,10 +499,9 @@ $(document).ready(function(){
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function (response) {
-				if (response) {
+				if (response.length > 0) {
 					var datas = [];
 					datas = response;
-					
 				} else {
 					/**An error occured then empty the tinyMCE Editor */
 					tinyMCE.activeEditor.setContent('');
